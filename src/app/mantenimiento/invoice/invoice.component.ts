@@ -76,9 +76,9 @@ mostrar(data?: Invoice):void{
 }
 
 mostraritem(data?: Item):void{
- 
-    this.formItem.setValue
-  
+  if (data?.id) {
+    this.formItem.setValue({ ...data, 'disponible': String(data.id) })
+  }
   this.visible = true
 }
 
