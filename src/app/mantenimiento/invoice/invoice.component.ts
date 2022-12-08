@@ -27,7 +27,9 @@ formInvoice: FormGroup = this.fb.group({
   id: [],
   correlative: [],
   name: [],
-  shcedules:[],
+  schedules:[],
+  address:[],
+  phone:[],
   email:[]
 })
 
