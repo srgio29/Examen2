@@ -20,7 +20,8 @@ constructor(
   private invoiceService: InvoiceControllerService,
   private itemService: ItemControllerService,
   private messageService: NzMessageService,
-  private fb: FormBuilder
+  private fb: FormBuilder,
+  private fbi: FormBuilder
 ){ }  
 
 formInvoice: FormGroup = this.fb.group({
@@ -33,6 +34,11 @@ formInvoice: FormGroup = this.fb.group({
   email:[]
 })
 
+formItem: FormGroup = this.fbi.group({
+  description: [],
+  id:[],
+  value:[]
+})
 
 ngOnInit(): void {
   this.invoiceService.find().subscribe(data => this.invoice = data)
@@ -55,18 +61,42 @@ cancel():void{
 ocultar():void {
   this.visible = false
   this.formInvoice.reset()
-
 }
 
+ocultaritem():void {
+  this.visible = false
+  this.formItem.reset()
+}
 
 mostrar(data?: Invoice):void{
+  if (data?.id) {
+    this.formInvoice.setValue({ ...data, 'disponible': String(data.id) })
+  }
+  this.visible = true
+}
+
+mostraritem(data?: Item):void{
+ 
+    this.formItem.setValue
+  
   this.visible = true
 }
 
 
 
+agregar():void{
+  this.itemService.create({ body: this.formItem.value }).subscribe((datoAgregado) => {
+    this.item = [...this.item, datoAgregado]
+    this.messageService.success('Item creado Exitosamente!')
+    this.formItem.reset()
+  })
+  this.visible=false
+}
+
+
+
 guardar():void{
-  this.formInvoice.setValue({ ...this.formInvoice.value, 'disponible': Boolean(this.formInvoice.value.disponible) })
+  //this.formInvoice.setValue({ ...this.formInvoice.value, 'disponible': Boolean(this.formInvoice.value.disponible) })
   if (this.formInvoice.value.id) {
     this.invoiceService.updateById({ 'id': this.formInvoice.value.id, 'body': this.formInvoice.value}).subscribe(
       () => {
@@ -90,6 +120,34 @@ guardar():void{
   }
   this.visible=false
   }
+
+  guardaritem():void{
+    //this.formInvoice.setValue({ ...this.formInvoice.value, 'disponible': Boolean(this.formInvoice.value.disponible) })
+    if (this.formItem.value.id) {
+      this.itemService.updateById({ 'id': this.formItem.value.id, 'body': this.formItem.value}).subscribe(
+        () => {
+          this.item = this.item.map(obj => {
+            if (obj.id === this.formItem.value.id){
+              return this.formItem.value;
+            }
+            return obj;
+          })
+          this.messageService.success('Registro actualizado exitosamente!')
+          this.formItem.reset()
+        }
+      )
+    } else {
+      delete this.formItem.value.id
+      this.itemService.create({ body: this.formItem.value }).subscribe((datoAgregado) => {
+        this.item = [...this.item, datoAgregado]
+        this.messageService.success('Registro creado Exitosamente!')
+        this.formItem.reset()
+      })
+    }
+    this.visible=false
+    }
+
+
 }
 
 

@@ -34,7 +34,9 @@
                         <a nz-popconfirm nzPopconfirmTitle="Esta seguro de borrar el registro?"
                         nzPopconfirmPlacement="bottom" (nzOnConfirm)="eliminar(data.id)" (nzOnCancel)="cancel()"
                         nzShape="circle" nzCancelText="No" nzOkText="Si"><i nz-icon nzType="delete"
-                        nzTheme="outline"></i></a>                         
+                        nzTheme="outline"></i></a>  
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <button (click)="mostraritem()" nz-button nzType="primary">Add Item</button>                     
                     </td>
                 </tr>
             </tbody>
@@ -109,3 +111,44 @@
         <button nz-button nzType="primary" (click)="guardar()">Guardar</button>
     </div>
 </nz-modal>
+
+
+<nz-modal [(nzVisible)]="visible" nzTitle="Administracion de Items">
+    <ng-container *nzModalContent>
+        <form nz-form nzLayout="vertical" (ngSubmit)="agregar()" [formGroup] ="formItem">
+            <div nz-row [nzGutter]="6">
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label>Descripcion</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <input formControlName="description" nz-input placeholder="Descripcion" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6"></div>
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Id</nz-form-label>
+                        <nz-form-control  nzErrorTip="Por favor escriba el dato correcto!">
+                            <input formControlName="id" nzPlaceHolder="Ingrese el ID">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label>Valor</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <input formControlName="value" nz-input placeholder="Valor" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="ocultaritem()">Cancelar</button>
+        <button nz-button nzType="primary" (click)="guardaritem()">Guardar</button>
+    </div>
+</nz-modal>            
